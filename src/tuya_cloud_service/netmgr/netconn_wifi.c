@@ -15,6 +15,7 @@
 #include "tal_api.h"
 #include "cJSON.h"
 #include "ap_netcfg.h"
+#include "tuya_lan.h"
 
 #ifdef ENABLE_BLUETOOTH
 #include "ble_mgr.h"
@@ -120,6 +121,9 @@ static void __netconn_wifi_event(WF_EVENT_E event, void *arg)
         wifi->conn.count = 0;
         wifi->conn.stat = NETCONN_WIFI_CONN_LINKUP;
         wifi->base.status = NETMGR_LINK_UP;
+
+        // Wi-Fi LAN initialization
+        tuya_lan_init(tuya_iot_client_get());
     } else {
         //! faild or disconnect auto connect
         if (NETCONN_WIFI_CONN_CHECK == wifi->conn.stat || NETCONN_WIFI_CONN_WAIT == wifi->conn.stat) {
